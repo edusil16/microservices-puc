@@ -1,0 +1,35 @@
+version: '3.5'
+
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "9090:80"
+  rabbitmq:
+    image: rabbitmq:3.8.3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - $PWD/storage/rabbitmq1:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=This_is_my_secret_phrase
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+volumes:
+  mysql:
+  rabbitmq:
+  phpmyadmin:
