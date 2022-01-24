@@ -31,23 +31,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtRequestFilter jwtRequestFilter;
     private final UserDetailsService jwtUserDetailsService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final CustomAuthenticationProvider customAuthenticationProvider;
 
     @Autowired
-    public WebSecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService jwtUserDetailsService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, CustomAuthenticationProvider customAuthenticationProvider) {
+    public WebSecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService jwtUserDetailsService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.jwtRequestFilter = jwtRequestFilter;
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.customAuthenticationProvider = customAuthenticationProvider;
     }
 
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(customAuthenticationProvider);
     }
 
     @Bean
