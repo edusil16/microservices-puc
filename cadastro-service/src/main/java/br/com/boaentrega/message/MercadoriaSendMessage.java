@@ -4,8 +4,7 @@
  */
 package br.com.boaentrega.message;
 
-import br.com.boaentrega.dto.ClienteDTO;
-import br.com.boaentrega.dto.NovoDepositoDTO;
+import br.com.boaentrega.dto.NovaMercadoriaDTO;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,24 +15,24 @@ import org.springframework.stereotype.Component;
  * @author Eduardo Santos
  */
 @Component
-public class ClienteSendMessage {
-    
+public class MercadoriaSendMessage {
+
     @Value("${cadastro.rabbitmq.exchange}")
     private String exchange;
     
-    @Value("${cadastro.cliente.rabbitmq.routingkey}")
-    private String routingKeyCliente;
+    @Value("${cadastro.mercadoria.rabbitmq.routingkey}")
+    private String routingKeyMercadoria;
     
     private final RabbitTemplate rabbitTemplate;
-    
+
     @Autowired
-    public ClienteSendMessage(RabbitTemplate rabbitTemplate) {
+    public MercadoriaSendMessage(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
     
-    public void sendMessageCliente (ClienteDTO clienteDTO) {
+    public void sendMessageMercadoria (NovaMercadoriaDTO novaMercadoria) {
         System.out.println(exchange);
-        System.out.println(routingKeyCliente);
-        rabbitTemplate.convertAndSend(exchange, routingKeyCliente, clienteDTO);
+        System.out.println(routingKeyMercadoria);
+        rabbitTemplate.convertAndSend(exchange, routingKeyMercadoria, novaMercadoria);
     }
 }

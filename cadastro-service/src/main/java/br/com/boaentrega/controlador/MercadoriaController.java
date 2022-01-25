@@ -6,6 +6,7 @@ package br.com.boaentrega.controlador;
 
 import br.com.boaentrega.dto.MercadoriaDTO;
 import br.com.boaentrega.modelo.Mercadoria;
+import br.com.boaentrega.servico.FornecedorService;
 import br.com.boaentrega.servico.MercadoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +28,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class MercadoriaController {
     
     private final MercadoriaService mercadoriaService;
+    
+    private final FornecedorService fornecedorService;
 
     @Autowired
-    public MercadoriaController(MercadoriaService mercadoriaService) {
+    public MercadoriaController(MercadoriaService mercadoriaService, FornecedorService fornecedorService) {
         this.mercadoriaService = mercadoriaService;
+        this.fornecedorService = fornecedorService;
     }
     
     @PostMapping("/cadastrar")
     public ResponseEntity inserirMercadoria(@RequestBody MercadoriaDTO mercadoria) {
         try {
-            var mercadoriaCadastrada = mercadoriaService.inserirMercadoria(Mercadoria.create(mercadoria));
-            return ResponseEntity.ok(mercadoriaCadastrada);
+            
+            var fornecedorProduto = fornecedorService.buscarFornecedorPorId(mercadoria.getIdFornecedor());
+            
+            Mercadoria novaMercadoria = new Mercadoria();
+            novaMercadoria.setFornecedor(fornecedorProduto.get());
+            novaMercadoria.setQuantidade(mercadoria.getQuantidade());
+            novaMercadoria.setTipoUnidade(mercadoria.getTipoUnidade());
+            novaMercadoria.setTipoProduto(mercadoria.getTipoProduto());
+            novaMercadoria.setProdutoDescricao(mercadoria.getProdutoDescricao());
+            
+            mercadoriaService.inserirMercadoria(novaMercadoria);
+            
+            return ResponseEntity.ok(mercadoria);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);
         }

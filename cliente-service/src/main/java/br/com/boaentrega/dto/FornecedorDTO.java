@@ -17,10 +17,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class FornecedorDTO {
+    private String id;
     private String nomeFornecedor;
-    private String cpfCnpj;
-    private Boolean ativo = true;
 }

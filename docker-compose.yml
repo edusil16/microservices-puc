@@ -31,31 +31,6 @@ services:
       - RABBITMQ_ERLANG_COOKIE=This_is_my_secret_phrase
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
-
-  registryservice:
-    image: registry-service:latest
-    ports:
-      - "8761:8761"
-
-  gatewayservice:
-    image: gateway-service:latest
-    ports:
-      - "8080:8080"
-
-  loginservice:
-    image: login-service:latest
-    ports:
-      - "8092:8092"
-
-  clienteservice:
-    image: cliente-service:latest
-    ports:
-      - "8091:8091"
-      
-  cadastroservice:
-    image: cadastro-service:latest
-    ports:
-      - "8090:8090"
 volumes:
   mysql:
   rabbitmq:

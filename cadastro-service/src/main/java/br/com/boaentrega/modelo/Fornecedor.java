@@ -3,8 +3,10 @@ package br.com.boaentrega.modelo;
 import br.com.boaentrega.dto.FornecedorDTO;
 import com.sun.istack.NotNull;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,8 +39,8 @@ public class Fornecedor {
     @Column(name = "fl_ativo")
     private Boolean ativo;
     
-    @OneToMany(mappedBy="fornecedor")
-    private List<Mercadoria> mercadoria;
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="fornecedor")
+    private List<Mercadoria> mercadorias;
     
     @OneToOne
     @NotNull

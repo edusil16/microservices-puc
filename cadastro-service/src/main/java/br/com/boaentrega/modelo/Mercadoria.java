@@ -38,21 +38,11 @@ public class Mercadoria {
     private String quantidade;
     
     @ManyToOne
-    @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
-    
-    @Column(name="acompanhemento_entrega")
-    private String acompanhamentoEntrega;
-    
-    @Column(name="status_entrega")
-    private String statusEntrega;
-    
-    @ManyToOne
     @JoinColumn(name = "id_fornecedor")
     private Fornecedor fornecedor;
     
     @Column(name="fl_ativo")
-    private Boolean ativo;
+    private Boolean ativo = true;
     
      public static Mercadoria create(MercadoriaDTO clienteDTO) {
         return new  ModelMapper().map(clienteDTO, Mercadoria.class);

@@ -4,7 +4,7 @@
  */
 package br.com.boaentrega.modelo;
 
-import br.com.boaentrega.dto.DepositoDTO;
+import br.com.boaentrega.dto.FornecedorDTO;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,17 +22,17 @@ import org.modelmapper.ModelMapper;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tb_deposito")
-public class Deposito {
+@Table(name = "tb_fornecedor_ativo")
+public class Fornecedor {
 
     @Id
-    @Column(name = "id_deposito")
+    @Column(name = "id_fonecedor")
     private Long id;
-    @Column(name = "cod_deposito")
-    private String codDeposito;
+    @Column(name = "nm_fornecedor")
+    private String nomeFornecedor;
 
-    public static Deposito create(DepositoDTO depositoDTO) {
-        return new ModelMapper().map(depositoDTO, Deposito.class);
+    public static Fornecedor create(FornecedorDTO fornecedorDTO) {
+        return new ModelMapper().map(fornecedorDTO, Fornecedor.class);
     }
 
 }

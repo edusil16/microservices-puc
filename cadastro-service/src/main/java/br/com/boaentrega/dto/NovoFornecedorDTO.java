@@ -4,11 +4,13 @@
  */
 package br.com.boaentrega.dto;
 
+import br.com.boaentrega.modelo.Fornecedor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.modelmapper.ModelMapper;
 
 /**
  *
@@ -19,8 +21,13 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class FornecedorDTO {
+public class NovoFornecedorDTO {
+
+    private String id;
+    private String codDeposito;
     private String nomeFornecedor;
-    private String cpfCnpj;
-    private Boolean ativo = true;
+    
+    public static NovoFornecedorDTO create(Fornecedor fornecedor) {
+        return new ModelMapper().map(fornecedor, NovoFornecedorDTO.class);
+    }
 }

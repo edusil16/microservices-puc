@@ -6,6 +6,7 @@ package br.com.boaentrega.servico;
 
 import br.com.boaentrega.dto.NovoDepositoDTO;
 import br.com.boaentrega.message.ClienteSendMessage;
+import br.com.boaentrega.message.DepositoSendMessage;
 import br.com.boaentrega.modelo.Deposito;
 import br.com.boaentrega.repositorio.DepositoRepository;
 import java.util.Optional;
@@ -20,17 +21,17 @@ import org.springframework.stereotype.Service;
 public class DepositoService {
     
     private final DepositoRepository depositoRepository;
-    private final ClienteSendMessage clienteSendMessage;
+    private final DepositoSendMessage depositoSendMessage;
 
     @Autowired
-    public DepositoService(DepositoRepository depositoRepository, ClienteSendMessage clienteSendMessage) {
+    public DepositoService(DepositoRepository depositoRepository, DepositoSendMessage depositoSendMessage) {
         this.depositoRepository = depositoRepository;
-        this.clienteSendMessage = clienteSendMessage;
+        this.depositoSendMessage = depositoSendMessage;
     }
     
     public Deposito inserirDeposito(Deposito deposito) {
         var depositoNovo = depositoRepository.save(deposito);
-        clienteSendMessage.sendMessageDeposito(NovoDepositoDTO.create(depositoNovo));
+        depositoSendMessage.sendMessageDeposito(NovoDepositoDTO.create(depositoNovo));
         return depositoNovo;
     }
 

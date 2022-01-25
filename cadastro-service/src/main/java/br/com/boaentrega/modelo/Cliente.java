@@ -37,9 +37,6 @@ public class Cliente {
     @Column(name="email")
     private String email;
     
-    @OneToMany(mappedBy="cliente")
-    private List<Mercadoria> mercadoriaEntraga;
-    
     @OneToOne
     @NotNull
     private Usuario usuario;

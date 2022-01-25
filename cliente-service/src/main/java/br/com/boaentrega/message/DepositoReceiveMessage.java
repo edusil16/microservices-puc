@@ -17,12 +17,12 @@ import org.springframework.stereotype.Component;
  * @author Eduardo Santos
  */
 @Component
-public class ClienteReceiveMessage {
+public class DepositoReceiveMessage {
     
     private final DepositoRepository depositoRepository;
 
     @Autowired
-    public ClienteReceiveMessage(DepositoRepository depositoRepository) {
+    public DepositoReceiveMessage(DepositoRepository depositoRepository) {
         this.depositoRepository = depositoRepository;
     }  
     

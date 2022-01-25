@@ -4,6 +4,8 @@
  */
 package br.com.boaentrega.servico;
 
+import br.com.boaentrega.dto.NovoFornecedorDTO;
+import br.com.boaentrega.message.FornecedorSendMessage;
 import br.com.boaentrega.modelo.Fornecedor;
 import br.com.boaentrega.repositorio.FornecedorRepository;
 import java.util.Optional;
@@ -16,15 +18,20 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FornecedorService {
+    
     private final FornecedorRepository fornecedorRepository;
+    private final FornecedorSendMessage fornecedorSendMessage;
 
     @Autowired
-    public FornecedorService(FornecedorRepository fornecedorRepository) {
+    public FornecedorService(FornecedorRepository fornecedorRepository, FornecedorSendMessage fornecedorSendMessage) {
         this.fornecedorRepository = fornecedorRepository;
+        this.fornecedorSendMessage = fornecedorSendMessage;
     }
     
     public Fornecedor inserirFornecedor(Fornecedor fornecedor) {
-        return fornecedorRepository.save(fornecedor);
+        var novoFornecedor = fornecedorRepository.save(fornecedor);
+        fornecedorSendMessage.sendMessageFornecedor(NovoFornecedorDTO.create(fornecedor));
+        return novoFornecedor;
     }
 
     public Fornecedor atualizarFornecedor(Fornecedor fornecedor) {
