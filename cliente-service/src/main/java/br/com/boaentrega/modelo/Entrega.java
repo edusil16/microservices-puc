@@ -4,6 +4,9 @@
  */
 package br.com.boaentrega.modelo;
 
+import br.com.boaentrega.dto.NovaEntregaDTO;
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,14 +27,37 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 @Table(name = "tb_entregas")
 public class Entrega {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_entrega")
     private Long idEntrega;
+
+    @Column(name = "id_cliente")
     private Long idCliente;
+
+    @Column(name = "id_mercadoria")
     private Long idMercadoria;
-    private Long idDeposito;
-    
-//    public static Entrega create(EntregaDTO entregaDTO) {
-//        return new ModelMapper().map(entregaDTO, Entrega.class);
-//    }
+
+    @Column(name = "cod_deposito")
+    private String codDeposito;
+
+    @Column(name = "quantidade")
+    private String quantidade;
+
+    @Column(name = "dt_saida")
+    private Date dataSaida;
+
+    @Column(name = "dt_atualizacao")
+    private Date dataAtualizacao;
+
+    @Column(name = "dt_entrega")
+    private Date dataEntrega;
+
+    @Column(name = "status")
+    private String status;
+
+    public static Entrega create(NovaEntregaDTO entregaDTO) {
+        return new ModelMapper().map(entregaDTO, Entrega.class);
+    }
 }
