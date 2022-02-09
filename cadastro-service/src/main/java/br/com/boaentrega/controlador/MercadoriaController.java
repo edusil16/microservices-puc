@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/mercadoria")
 public class MercadoriaController {
-    
+
     private final MercadoriaService mercadoriaService;
-    
+
     private final FornecedorService fornecedorService;
 
     @Autowired
@@ -36,22 +36,11 @@ public class MercadoriaController {
         this.mercadoriaService = mercadoriaService;
         this.fornecedorService = fornecedorService;
     }
-    
+
     @PostMapping("/cadastrar")
     public ResponseEntity inserirMercadoria(@RequestBody MercadoriaDTO mercadoria) {
         try {
-            
-            var fornecedorProduto = fornecedorService.buscarFornecedorPorId(mercadoria.getIdFornecedor());
-            
-            Mercadoria novaMercadoria = new Mercadoria();
-            novaMercadoria.setFornecedor(fornecedorProduto.get());
-            novaMercadoria.setQuantidade(mercadoria.getQuantidade());
-            novaMercadoria.setTipoUnidade(mercadoria.getTipoUnidade());
-            novaMercadoria.setTipoProduto(mercadoria.getTipoProduto());
-            novaMercadoria.setProdutoDescricao(mercadoria.getProdutoDescricao());
-            
-            mercadoriaService.inserirMercadoria(novaMercadoria);
-            
+            mercadoriaService.inserirMercadoria(Mercadoria.create(mercadoria));
             return ResponseEntity.ok(mercadoria);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);
@@ -92,8 +81,8 @@ public class MercadoriaController {
     public ResponseEntity buscarMercadoriaPorId(@PathVariable("id") Long id) {
         try {
             var cliente = mercadoriaService.buscarMercadoriaPorId(id);
-            
-            return cliente.isPresent() 
+
+            return cliente.isPresent()
                     ? ResponseEntity.ok(cliente.get())
                     : ResponseEntity.notFound().build();
         } catch (Exception e) {

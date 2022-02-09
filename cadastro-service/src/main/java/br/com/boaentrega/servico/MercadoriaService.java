@@ -33,7 +33,6 @@ public class MercadoriaService {
         
         NovaMercadoriaDTO mercadoriaDTO = new NovaMercadoriaDTO();
         mercadoriaDTO.setId(novaMercadoria.getId());
-        mercadoriaDTO.setIdFornecedor(novaMercadoria.getFornecedor().getId());
         mercadoriaDTO.setProdutoDescricao(novaMercadoria.getProdutoDescricao());
         mercadoriaSendMessage.sendMessageMercadoria(mercadoriaDTO);
         

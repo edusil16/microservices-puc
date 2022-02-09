@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
@@ -33,14 +31,7 @@ public class Mercadoria {
     
     @Column(name="tp_unidade")
     private String tipoUnidade;
-    
-    @Column(name="quantidade")
-    private String quantidade;
-    
-    @ManyToOne
-    @JoinColumn(name = "id_fornecedor")
-    private Fornecedor fornecedor;
-    
+
     @Column(name="fl_ativo")
     private Boolean ativo = true;
     

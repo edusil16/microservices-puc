@@ -5,6 +5,7 @@
 package br.com.boaentrega.modelo;
 
 import br.com.boaentrega.dto.NovaEntregaDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,12 +47,15 @@ public class Entrega {
     private String quantidade;
 
     @Column(name = "dt_saida")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dataSaida;
 
     @Column(name = "dt_atualizacao")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dataAtualizacao;
 
     @Column(name = "dt_entrega")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date dataEntrega;
 
     @Column(name = "status")

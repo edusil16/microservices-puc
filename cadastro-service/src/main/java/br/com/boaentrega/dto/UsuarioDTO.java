@@ -2,11 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package br.com.boaentrega.jwt.dto;
+package br.com.boaentrega.dto;
 
-import java.io.Serializable;
+import br.com.boaentrega.modelo.dominio.Perfil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -18,9 +19,9 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-public class JwtResponse 
-        implements Serializable {
-    
-    private static final long serialVersionUID = -8091879091924046844L;
-    private final String jwttoken; 
+@NoArgsConstructor
+public class UsuarioDTO {
+    private String login;
+    private String senha;
+    private String perfil;
 }
