@@ -4,36 +4,36 @@
  */
 package br.com.boaentrega.modelo;
 
-import br.com.boaentrega.dto.MercadoriaDTO;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
+import lombok.Setter;
 
 /**
  *
  * @author Eduardo Santos
  */
-@Data
-@Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tb_mercadoria")
-public class Mercadoria {
-
+@Entity
+@Table(name = "tb_usuario_perfil")
+public class UsuarioPerfil {
     @Id
-    @Column(name = "id_mercadoria")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column(name = "id_perfil_usuario")
     private Long id;
 
-    @Column(name = "descricao")
-    private String descricao;
-
-    public static Mercadoria create(MercadoriaDTO mercadoriaDTO) {
-        return new ModelMapper().map(mercadoriaDTO, Mercadoria.class);
-    }
+    @Column(name="id_perfil")
+    private Long idPerfil;
     
+    @Column(name="id_usuario")
+    private Long idUsuario;
 }

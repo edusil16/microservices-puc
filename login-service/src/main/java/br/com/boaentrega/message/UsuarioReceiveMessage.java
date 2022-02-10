@@ -5,8 +5,7 @@
 package br.com.boaentrega.message;
 
 import br.com.boaentrega.dto.UsuarioDTO;
-import br.com.boaentrega.modelo.Usuario;
-import br.com.boaentrega.repositorio.UsuarioRepository;
+import br.com.boaentrega.servico.CadastroService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -19,16 +18,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class UsuarioReceiveMessage {
 
-    private final UsuarioRepository usuarioRepository;
+    private final CadastroService cadastroService;
 
     @Autowired
-    public UsuarioReceiveMessage(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public UsuarioReceiveMessage(CadastroService cadastroService) {
+        this.cadastroService = cadastroService;
     }
 
     @RabbitListener(queues = {"${cadastro.usuario.rabbitmq.queue}"})
     public void receiveMessageUsuario(@Payload UsuarioDTO usuario) {
         System.out.println(usuario);
-        usuarioRepository.save(Usuario.create(usuario));
+        cadastroService.cadastrarUsuario(usuario);
     }
 }

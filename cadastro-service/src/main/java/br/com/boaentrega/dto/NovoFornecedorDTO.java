@@ -24,7 +24,6 @@ import org.modelmapper.ModelMapper;
 public class NovoFornecedorDTO {
 
     private String id;
-    private String codDeposito;
     private String nomeFornecedor;
     
     public static NovoFornecedorDTO create(Fornecedor fornecedor) {

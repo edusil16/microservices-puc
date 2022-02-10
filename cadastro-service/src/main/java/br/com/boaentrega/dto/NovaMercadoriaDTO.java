@@ -24,7 +24,6 @@ import org.modelmapper.ModelMapper;
 public class NovaMercadoriaDTO {
 
     private Long id;
-    private Long idFornecedor;
     private String produtoDescricao;
 
     public static NovaMercadoriaDTO create(Mercadoria mercadoria) {
