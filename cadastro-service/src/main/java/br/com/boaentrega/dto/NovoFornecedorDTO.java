@@ -4,7 +4,7 @@
  */
 package br.com.boaentrega.dto;
 
-import br.com.boaentrega.modelo.Fornecedor;
+import br.com.boaentrega.model.Fornecedor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

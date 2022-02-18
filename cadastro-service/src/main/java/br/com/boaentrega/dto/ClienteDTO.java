@@ -1,6 +1,6 @@
 package br.com.boaentrega.dto;
 
-import br.com.boaentrega.modelo.Cliente;
+import br.com.boaentrega.model.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,10 @@ import org.modelmapper.ModelMapper;
 public class ClienteDTO {
     
     private String id;
+    private String cpf;
+    private String email;
     private String name;
+    private String endereco;
 
     public static ClienteDTO create(Cliente cliente) {
         return new ModelMapper().map(cliente, ClienteDTO.class);

@@ -5,8 +5,8 @@
 package br.com.boaentrega.message;
 
 import br.com.boaentrega.dto.FornecedorDTO;
-import br.com.boaentrega.modelo.Fornecedor;
-import br.com.boaentrega.repositorio.FornecedorRepository;
+import br.com.boaentrega.model.Fornecedor;
+import br.com.boaentrega.repository.FornecedorRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;

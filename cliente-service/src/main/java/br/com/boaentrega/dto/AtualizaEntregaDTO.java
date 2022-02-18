@@ -21,5 +21,5 @@ import lombok.ToString;
 @AllArgsConstructor
 public class AtualizaEntregaDTO {
     private String codDeposito;
-    private String status;
+    private Long status = 2l;
 }

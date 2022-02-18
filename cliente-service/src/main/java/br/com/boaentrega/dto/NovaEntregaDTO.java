@@ -4,6 +4,7 @@
  */
 package br.com.boaentrega.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +22,10 @@ import lombok.ToString;
 @AllArgsConstructor
 public class NovaEntregaDTO {
     private Long idDeposito;
-    private Long idMercadoria;
+    private List<MercadoriaDTO> mercadorias;
     private Long idFornecedor;
     private Long idCliente;
     private String codDeposito;
     private String quantidade;
-    private String status = "Em Separacao";
+    private Long status = 1l;
 }

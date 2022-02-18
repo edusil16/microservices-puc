@@ -5,7 +5,7 @@
 package br.com.boaentrega.message;
 
 import br.com.boaentrega.dto.UsuarioDTO;
-import br.com.boaentrega.servico.CadastroService;
+import br.com.boaentrega.service.CadastroService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
