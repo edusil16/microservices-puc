@@ -11,7 +11,8 @@ public enum Perfil {
     ADMIN("1"),
     FORNECEDOR("2"),
     CLIENTE("3"),
-    MOTORISTA("4");
+    MOTORISTA("4"),
+    OPERADOR("5");
     
     private static final Map<String, Perfil> perfilValor = new HashMap<>();
 

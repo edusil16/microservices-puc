@@ -7,6 +7,7 @@ package br.com.boaentrega.controller;
 import br.com.boaentrega.dto.DepositoDTO;
 import br.com.boaentrega.model.Deposito;
 import br.com.boaentrega.service.DepositoService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -84,6 +85,11 @@ public class DepositoController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);
         }
+    }
+    
+    @GetMapping("/buscarTodos")
+    public List<Deposito> buscarListaDeposito() {
+        return depositoService.buscarTodos();
     }
 
 

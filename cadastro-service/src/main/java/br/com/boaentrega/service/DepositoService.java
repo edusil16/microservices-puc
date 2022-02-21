@@ -5,10 +5,10 @@
 package br.com.boaentrega.service;
 
 import br.com.boaentrega.dto.NovoDepositoDTO;
-import br.com.boaentrega.message.ClienteSendMessage;
 import br.com.boaentrega.message.DepositoSendMessage;
 import br.com.boaentrega.model.Deposito;
 import br.com.boaentrega.repository.DepositoRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +58,10 @@ public class DepositoService {
     
     public Optional<Deposito> buscarDepositoPorId(Long id) {
         return depositoRepository.findById(id);
+    }
+    
+    public List<Deposito> buscarTodos() {
+        return depositoRepository.findAll();
     }
     
 }
