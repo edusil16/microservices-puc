@@ -25,6 +25,9 @@ public class JwtUtil {
 
     @Value("${jwt.secret}")
     private String SECRET_KEY;
+    
+    public static final String AUTHORITIES_KEY = "scopes";
+
 
     private static final int TOKEN_VALIDITY = 3600 * 5;
 
@@ -58,6 +61,8 @@ public class JwtUtil {
     public String generateToken(UserDetails userDetails) {
 
         Map<String, Object> claims = new HashMap<>();
+        
+        claims.put(AUTHORITIES_KEY, userDetails.getAuthorities());
 
         return Jwts.builder()
                 .setClaims(claims)
