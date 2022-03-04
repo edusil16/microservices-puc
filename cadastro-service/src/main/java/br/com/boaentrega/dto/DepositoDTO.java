@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DepositoDTO {
-    private String localizacao;
+    private String regiao;
     private String endereco;
     private String codDeposito;
     private Boolean ativo = true;

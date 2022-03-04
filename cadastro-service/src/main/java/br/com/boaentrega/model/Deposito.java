@@ -23,6 +23,9 @@ public class Deposito {
     @Column(name="id_deposito")
     private Long id;
     
+    @Column(name="regiao")
+    private String regiao;
+    
     @Column(name="endereco")
     private String endereco;
     

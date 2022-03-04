@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.security.core.userdetails.User;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -47,30 +48,29 @@ public class JwtService implements UserDetailsService {
         UserDetails userDetails = loadUserByUsername(userName);
         String newGeneratedToken = jwtUtil.generateToken(userDetails);
 
-        Usuario usuario = usuarioRepository.buscarPorLogin(userName).get();
-
-        return new JwtResponseDTO(usuario, newGeneratedToken);
+        return new JwtResponseDTO(newGeneratedToken);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.buscarPorLogin(username).get();
-
-        if (usuario != null) {
-            return new org.springframework.security.core.userdetails.User(
-                    usuario.getLogin(),
-                    usuario.getSenha(),
-                    getAuthority(usuario)
-            );
-        } else {
+        
+        if (usuario == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
+        
+        UserDetails user = User.withUsername(usuario.getLogin())
+                .password(usuario.getSenha())
+                .authorities(getAuthority(usuario))
+                .build();
+        
+        return user;
     }
 
     private Set getAuthority(Usuario usuario) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         usuario.getPerfis().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getDescricao()));
+            authorities.add(new SimpleGrantedAuthority(role.getDescricao()));
         });
         return authorities;
     }

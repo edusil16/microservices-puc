@@ -8,6 +8,7 @@ import br.com.boaentrega.dto.UsuarioDTO;
 import br.com.boaentrega.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class UsuarioController {
     }
     
     @PostMapping("/cadastrar")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity cadastrarUsuario(@RequestBody UsuarioDTO usuario) {
         try {
             usuarioService.publicarUsuario(usuario);
