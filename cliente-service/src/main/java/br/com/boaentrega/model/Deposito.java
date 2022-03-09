@@ -28,6 +28,10 @@ public class Deposito {
     @Id
     @Column(name = "id_deposito")
     private Long id;
+    
+    @Column(name = "endereco")
+    private String endereco;
+    
     @Column(name = "cod_deposito")
     private String codDeposito;
 

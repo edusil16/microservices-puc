@@ -33,7 +33,7 @@ public enum AndamentoEntrega {
         }
     }
     
-    public static AndamentoEntrega obterPerfilPorValor(Long perfil) {
+    public static AndamentoEntrega obterAndamentoPorValor(Long perfil) {
         return andamentoValor.get(perfil);
     }
 }

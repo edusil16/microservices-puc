@@ -15,6 +15,8 @@ import br.com.boaentrega.model.RomaneioEntrega;
 import br.com.boaentrega.model.dominio.AndamentoEntrega;
 import br.com.boaentrega.service.EntregaService;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,21 +41,23 @@ public class EntregaController {
     public EntregaController(EntregaService entregaService) {
         this.entregaService = entregaService;
     }
-    
+
     @PostMapping("/criarEntrega")
     public ResponseEntity inserirEntrega(@RequestBody NovaEntregaDTO entrega) {
         try {
-            
+
             /* Recuperando os valores de Cliente, Depósito e Fornecedor */
             Optional<Fornecedor> fornecedor = entregaService.buscarFornecedorPorId(entrega.getIdFornecedor());
             Optional<Deposito> deposito = entregaService.buscarDepositoPorId(entrega.getIdDeposito());
             Optional<Cliente> cliente = entregaService.buscarClientePorId(entrega.getIdCliente());
-            
+
+            var rota = entregaService.calcularRota(deposito.get().getEndereco(), cliente.get().getEndereco());
+
             Date dataAtual = new Date();
             Entrega novaEntrega = new Entrega();
- 
-            AndamentoEntrega andamento = AndamentoEntrega.obterPerfilPorValor(entrega.getStatus());
-            
+
+            AndamentoEntrega andamento = AndamentoEntrega.obterAndamentoPorValor(entrega.getStatus());
+
             novaEntrega.setCliente(cliente.get());
             novaEntrega.setFornecedor(fornecedor.get());
             novaEntrega.setCodPrimeiroDeposito(deposito.get().getCodDeposito());
@@ -62,23 +66,28 @@ public class EntregaController {
             novaEntrega.setVolume(entrega.getMercadorias().size());
             novaEntrega.setDataCriacao(dataAtual);
             novaEntrega.setStatus(andamento.toString());
-               
+
             var retorno = entregaService.inserirNovaEntrega(novaEntrega);
-            
-            for (MercadoriaDTO idMercadoria : entrega.getMercadorias()){   
+
+            for (MercadoriaDTO idMercadoria : entrega.getMercadorias()) {
                 RomaneioEntrega romaneio = new RomaneioEntrega();
                 var mercadoria = entregaService.buscarMercadoriaPorId(idMercadoria.getId());
                 romaneio.setIdEntrega(retorno.getIdEntrega());
                 romaneio.setIdMercadoria(mercadoria.get().getId());
                 entregaService.inserirMercadoriaRomaneio(romaneio);
+                
             }
-                       
-            return ResponseEntity.ok(retorno);
+
+            var entregaGerada = new HashMap<String, Object>();
+            entregaGerada.put("rota", rota);
+            entregaGerada.put("entrega", retorno);
+            return ResponseEntity.ok(entregaGerada);
+            
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);
         }
-    } 
-    
+    }
+
     @PutMapping("/atualizarEntrega/{id}")
     public ResponseEntity atualizarFluxoEntrega(@PathVariable("id") Long id, @RequestBody AtualizaEntregaDTO entrega) {
         try {
@@ -88,7 +97,7 @@ public class EntregaController {
             return ResponseEntity.badRequest().body(e);
         }
     }
-    
+
     @PostMapping("/acusarRecebimento/{id}")
     public ResponseEntity acusarRecebimento(@PathVariable("id") Long id) {
         try {
@@ -98,7 +107,7 @@ public class EntregaController {
             return ResponseEntity.badRequest().body(e);
         }
     }
-    
+
     @PostMapping("/consultarEntrega/{id}")
     public ResponseEntity consultarEntrega(@PathVariable("id") Long id) {
         try {

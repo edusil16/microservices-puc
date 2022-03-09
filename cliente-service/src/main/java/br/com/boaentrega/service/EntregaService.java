@@ -21,12 +21,24 @@ import br.com.boaentrega.repository.FornecedorRepository;
 import br.com.boaentrega.repository.MercadoriaRepository;
 import br.com.boaentrega.repository.ConsultaRomaneioRepository;
 import br.com.boaentrega.repository.RomaneioEntregaRepository;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,6 +56,9 @@ public class EntregaService {
     private final ConsultaRomaneioRepository consultaEntregaRepository;
     private final RomaneioEntregaRepository romaneioEntregaRepository;
     private final EntregaSendMessage entregaSendMessage;
+
+    @Value("${cadastro.googleapi.key}")
+    private String googleApiKey;
 
     @Autowired
     public EntregaService(EntregaRepository entregaRepository,
@@ -76,7 +91,7 @@ public class EntregaService {
         Date date = new Date();
         var entregaAtual = entregaRepository.findById(id);
         entregaAtual.get().setCodUltimoDeposito(entrega.getCodDeposito());
-        entregaAtual.get().setStatus(AndamentoEntrega.obterPerfilPorValor(entrega.getStatus()).toString());
+        entregaAtual.get().setStatus(AndamentoEntrega.obterAndamentoPorValor(entrega.getStatus()).toString());
         entregaAtual.get().setDataAtualizacao(date);
         var entregaAtualizada = entregaRepository.save(entregaAtual.get());
         return entregaAtualizada;
@@ -86,15 +101,13 @@ public class EntregaService {
         Date date = new Date();
         var entrega = entregaRepository.findById(id);
         entrega.get().setDataEntrega(date);
-        entrega.get().setStatus(AndamentoEntrega.obterPerfilPorValor(3l).toString());
-        
+        entrega.get().setStatus(AndamentoEntrega.obterAndamentoPorValor(3l).toString());
+
         //enviado msg ao serviço de gestao. 
         RomaneioEntregaDTO romaneio = new RomaneioEntregaDTO();
-        
+
         entregaSendMessage.sendMessageCliente(romaneio);
-        
-        
-        
+
         entregaRepository.save(entrega.get());
     }
 
@@ -127,5 +140,29 @@ public class EntregaService {
         String anoAtual = formato.format(date);
         numeroEntrega = anoAtual + "-" + numero;
         return numeroEntrega;
+    }
+
+    public String calcularRota(String origem, String destino) {
+        
+        var client = HttpClient.newHttpClient();
+        
+        try {
+            var request = HttpRequest.newBuilder(
+                    URI.create(
+                            "https://maps.googleapis.com/maps/api/directions/json?origin="
+                            + origem + "&destination=" + destino
+                            + "&key=" + googleApiKey))
+                    .header("accept", "application/json")
+                    .build();
+            
+            var response = client.send(request, BodyHandlers.ofString());
+
+            System.out.println(response.body());
+
+            return "0";
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return "";
     }
 }

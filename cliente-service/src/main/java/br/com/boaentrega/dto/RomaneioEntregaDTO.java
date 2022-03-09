@@ -4,6 +4,7 @@
  */
 package br.com.boaentrega.dto;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,4 +26,5 @@ public class RomaneioEntregaDTO {
     private String numEntrega;
     private String unidades;
     private String descricao;
+    private Map<String, Object> rotas;
 }

@@ -24,6 +24,7 @@ import org.modelmapper.ModelMapper;
 public class NovoDepositoDTO {
     
     private String id;
+    private String endereco;
     private String codDeposito;
     
     public static NovoDepositoDTO create(Deposito deposito) {
