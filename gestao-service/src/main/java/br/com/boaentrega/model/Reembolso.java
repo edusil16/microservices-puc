@@ -22,7 +22,7 @@ import lombok.Data;
 public class Reembolso {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_reembolso")
     private Long id;
     

@@ -22,7 +22,7 @@ import lombok.Data;
 public class EntregaRealizada {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_entrega")
     private Long id;
     

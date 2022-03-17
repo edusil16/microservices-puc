@@ -39,7 +39,7 @@ import org.modelmapper.ModelMapper;
 public class Entrega {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_entrega")
     private Long idEntrega;
 
@@ -77,14 +77,6 @@ public class Entrega {
 
     @Column(name = "status")
     private String status;
-
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "tb_romaneio_entrega",
-            joinColumns = @JoinColumn(name = "id_entrega"),
-            inverseJoinColumns = @JoinColumn(name = "id_mercadoria"))
-    private Set<Mercadoria> mercadorias;
 
     public static Entrega create(NovaEntregaDTO entregaDTO) {
         return new ModelMapper().map(entregaDTO, Entrega.class);

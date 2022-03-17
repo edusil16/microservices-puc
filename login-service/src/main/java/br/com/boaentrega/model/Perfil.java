@@ -21,7 +21,7 @@ import lombok.Setter;
 @Table(name = "tb_perfil")
 public class Perfil  {
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id_perfil")
     private Long id;
 

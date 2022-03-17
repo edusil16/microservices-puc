@@ -23,6 +23,5 @@ public class MercadoriaDTO {
     private String produtoDescricao;
     private String tipoProduto;
     private String tipoUnidade;
-    private String quantidade;
-    private Long idFornecedor;
+    private String qtdEstoque;
 }

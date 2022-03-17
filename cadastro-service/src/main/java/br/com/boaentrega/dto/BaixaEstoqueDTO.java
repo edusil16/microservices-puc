@@ -4,7 +4,6 @@
  */
 package br.com.boaentrega.dto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,14 +17,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
-public class NovaEntregaDTO {
-    private Long idDeposito;
-    private List<MercadoriaPedidoDTO> mercadorias;
-    private Long idFornecedor;
-    private Long idCliente;
-    private String codDeposito;
-    private String quantidade;
-    private Long status = 1l;
+@NoArgsConstructor
+public class BaixaEstoqueDTO {
+    private Long idMercadoria;
+    private Integer quantidade;
 }

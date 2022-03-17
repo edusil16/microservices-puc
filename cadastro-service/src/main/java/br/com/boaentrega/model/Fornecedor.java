@@ -20,7 +20,7 @@ import org.modelmapper.ModelMapper;
 public class Fornecedor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_fornecedor")
     private Long id;
 

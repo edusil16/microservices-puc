@@ -4,6 +4,7 @@
  */
 package br.com.boaentrega.message;
 
+import br.com.boaentrega.dto.BaixaEstoqueDTO;
 import br.com.boaentrega.dto.RomaneioEntregaDTO;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,11 @@ public class EntregaSendMessage {
     @Value("${cadastro.rabbitmq.exchange}")
     private String exchange;
     
-    @Value("${cadastro.gestao.rabbitmq.routingkey}")
+    @Value("${gestao.cliente.rabbitmq.routingkey}")
     private String routingKeyCliente;
+    
+    @Value("${gestao.estoque.rabbitmq.routingkey}")
+    private String routingKeyBaixaEstoque;
     
     private final RabbitTemplate rabbitTemplate;
     
@@ -34,5 +38,11 @@ public class EntregaSendMessage {
         System.out.println(exchange);
         System.out.println(routingKeyCliente);
         rabbitTemplate.convertAndSend(exchange, routingKeyCliente, romaneio);
+    }
+    
+    public void sendMessageBaixaEstoque (BaixaEstoqueDTO baixaEstoque) {
+        System.out.println(exchange);
+        System.out.println(routingKeyCliente);
+        rabbitTemplate.convertAndSend(exchange, routingKeyBaixaEstoque, baixaEstoque);
     }
 }

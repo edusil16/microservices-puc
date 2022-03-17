@@ -21,5 +21,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class DepositoDTO {
     private String id;
+    private String endereco;
     private String codDeposito;
 }

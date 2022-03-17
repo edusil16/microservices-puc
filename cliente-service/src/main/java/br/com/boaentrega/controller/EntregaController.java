@@ -5,7 +5,11 @@
 package br.com.boaentrega.controller;
 
 import br.com.boaentrega.dto.AtualizaEntregaDTO;
+import br.com.boaentrega.dto.BaixaEstoqueDTO;
+import br.com.boaentrega.dto.ClienteDTO;
+import br.com.boaentrega.dto.DirectionsDTO;
 import br.com.boaentrega.dto.MercadoriaDTO;
+import br.com.boaentrega.dto.MercadoriaPedidoDTO;
 import br.com.boaentrega.dto.NovaEntregaDTO;
 import br.com.boaentrega.model.Cliente;
 import br.com.boaentrega.model.Deposito;
@@ -14,9 +18,13 @@ import br.com.boaentrega.model.Fornecedor;
 import br.com.boaentrega.model.RomaneioEntrega;
 import br.com.boaentrega.model.dominio.AndamentoEntrega;
 import br.com.boaentrega.service.EntregaService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +59,7 @@ public class EntregaController {
             Optional<Deposito> deposito = entregaService.buscarDepositoPorId(entrega.getIdDeposito());
             Optional<Cliente> cliente = entregaService.buscarClientePorId(entrega.getIdCliente());
 
-            var rota = entregaService.calcularRota(deposito.get().getEndereco(), cliente.get().getEndereco());
+            var rota = entregaService.calcularRota(deposito.get().getEndereco().replace(" ", "+"), cliente.get().getEndereco().replace(" ", "+"));
 
             Date dataAtual = new Date();
             Entrega novaEntrega = new Entrega();
@@ -67,22 +75,32 @@ public class EntregaController {
             novaEntrega.setDataCriacao(dataAtual);
             novaEntrega.setStatus(andamento.toString());
 
-            var retorno = entregaService.inserirNovaEntrega(novaEntrega);
+            var entregaCriada = entregaService.inserirNovaEntrega(novaEntrega);
 
-            for (MercadoriaDTO idMercadoria : entrega.getMercadorias()) {
+            for (MercadoriaPedidoDTO mercadoriaPedida : entrega.getMercadorias()) {
                 RomaneioEntrega romaneio = new RomaneioEntrega();
-                var mercadoria = entregaService.buscarMercadoriaPorId(idMercadoria.getId());
-                romaneio.setIdEntrega(retorno.getIdEntrega());
+                var mercadoria = entregaService.buscarMercadoriaPorId(mercadoriaPedida.getId());
+                romaneio.setIdEntrega(entregaCriada.getIdEntrega());
                 romaneio.setIdMercadoria(mercadoria.get().getId());
+                romaneio.setQuantidade(mercadoriaPedida.getQtdPedida());
                 entregaService.inserirMercadoriaRomaneio(romaneio);
-                
+
+                /* Baixa no estoque */
+                BaixaEstoqueDTO baixaEstoque = new BaixaEstoqueDTO();
+                baixaEstoque.setIdMercadoria(mercadoriaPedida.getId());
+                baixaEstoque.setQuantidade(mercadoriaPedida.getQtdPedida());
+                entregaService.enviarBaixaEstoque(baixaEstoque);
             }
 
-            var entregaGerada = new HashMap<String, Object>();
-            entregaGerada.put("rota", rota);
-            entregaGerada.put("entrega", retorno);
-            return ResponseEntity.ok(entregaGerada);
+            Gson gson = new Gson();
             
+            var json = gson.toJson(rota.body());
+            
+            var entregaGerada = new HashMap<String, Object>();
+            entregaGerada.put("rota", json);
+            entregaGerada.put("entrega", entregaCriada);
+            return ResponseEntity.ok(entregaGerada);
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);
         }
@@ -111,8 +129,38 @@ public class EntregaController {
     @PostMapping("/consultarEntrega/{id}")
     public ResponseEntity consultarEntrega(@PathVariable("id") Long id) {
         try {
-            var retorno = entregaService.buscarEntregaPorId(id);
-            return ResponseEntity.ok(retorno);
+            var romaneio = entregaService.buscarRomaneioPorId(id);
+
+            ClienteDTO clienteEntrega = new ClienteDTO();
+            clienteEntrega.setName(romaneio.get(0).getCliente());
+            clienteEntrega.setEndereco(romaneio.get(0).getEndereco());
+
+            List<MercadoriaDTO> mercadoriaEntrega = new ArrayList<>();
+
+            for (var mercadoria : romaneio) {
+                MercadoriaDTO mercadoriaRomaneio = new MercadoriaDTO();
+                var descricao = mercadoria.getDescricao();
+                var quantidade = mercadoria.getQuantidade();
+                var numEntrega = mercadoria.getNumEntrega();
+
+                mercadoriaRomaneio.setProdutoDescricao(descricao);
+                mercadoriaRomaneio.setQuantidade(quantidade);
+                mercadoriaRomaneio.setNumEntrega(numEntrega);
+
+                mercadoriaEntrega.add(mercadoriaRomaneio);
+            }
+
+            HashMap<String, ClienteDTO> clienteMapa = new HashMap<>();
+            HashMap<String, List<MercadoriaDTO>> mercadoriaMapa = new HashMap<>();
+
+            clienteMapa.put("Dados Cliente", clienteEntrega);
+            mercadoriaMapa.put("Dados Mercadoria", mercadoriaEntrega);
+
+            HashMap<Object, Object> mapaEntrega = new HashMap<>();
+            mapaEntrega.put("Entrega", clienteMapa);
+            mapaEntrega.put("Mercadorias", mercadoriaMapa);
+
+            return ResponseEntity.ok(mapaEntrega);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);
         }

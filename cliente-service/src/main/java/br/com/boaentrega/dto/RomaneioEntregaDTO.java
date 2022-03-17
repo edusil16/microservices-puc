@@ -22,9 +22,10 @@ import lombok.ToString;
 @AllArgsConstructor
 public class RomaneioEntregaDTO {
     private String codDeposito;
+    private String cliente;
+    private String endereco;
     private String dtCriacao;
     private String numEntrega;
-    private String unidades;
+    private Long quantidade;
     private String descricao;
-    private Map<String, Object> rotas;
 }

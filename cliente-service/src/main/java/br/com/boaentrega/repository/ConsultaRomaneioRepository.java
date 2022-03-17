@@ -29,9 +29,10 @@ public class ConsultaRomaneioRepository {
     }
 
     public List<RomaneioEntregaDTO> buscarRomaneioEntregaPorId(Long idEntrega) {
-        var retorno = jdbc.query("select ent.cod_primeiro_deposito, ent.dt_criacao, ent.num_entrega, rent.unidade, mer.descricao from tb_entregas ent\n"
-                + "inner join tb_romaneio_entrega rent on ent.id_entrega = rent.id_entrega\n"
-                + "inner join tb_mercadoria mer on rent.id_mercadoria = mer.id_mercadoria\n"
+        var retorno = jdbc.query("select ent.cod_primeiro_deposito, c.nome_cliente, c.endereco, ent.dt_criacao, ent.num_entrega, r.quantidade, mer.descricao from tb_entregas ent\n"
+                + "inner join tb_romaneio r on ent.id_entrega = r.id_entrega\n"
+                + "inner join tb_mercadoria mer on r.id_mercadoria = mer.id_mercadoria\n"
+                + "inner join tb_cliente c on c.id_cliente = ent.id_cliente\n"
                 + "where ent.id_entrega = ?", 
                 new Object[]{idEntrega}
                 , new RowMapper<RomaneioEntregaDTO>() {
@@ -39,9 +40,11 @@ public class ConsultaRomaneioRepository {
             public RomaneioEntregaDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
                 RomaneioEntregaDTO entrega = new RomaneioEntregaDTO();
                 entrega.setCodDeposito(rs.getString("cod_primeiro_deposito"));
+                entrega.setCliente(rs.getString("nome_cliente"));
+                entrega.setEndereco(rs.getString("endereco"));
                 entrega.setDtCriacao(rs.getString("dt_criacao"));
                 entrega.setNumEntrega(rs.getString("num_entrega"));
-                entrega.setUnidades(rs.getString("unidade"));
+                entrega.setQuantidade(Long.parseLong(rs.getString("quantidade")));
                 entrega.setDescricao(rs.getString("descricao"));
 
                 return entrega;

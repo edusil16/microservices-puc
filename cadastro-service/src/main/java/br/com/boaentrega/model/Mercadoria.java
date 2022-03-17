@@ -19,7 +19,7 @@ import org.modelmapper.ModelMapper;
 @Data
 public class Mercadoria {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_mercadoria")
     private Long id;
     
@@ -31,6 +31,9 @@ public class Mercadoria {
     
     @Column(name="tp_unidade")
     private String tipoUnidade;
+    
+    @Column(name="quatidade_estoque")
+    private Integer qtdEstoque;
 
     @Column(name="fl_ativo")
     private Boolean ativo = true;

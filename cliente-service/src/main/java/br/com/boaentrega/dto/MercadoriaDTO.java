@@ -4,6 +4,7 @@
  */
 package br.com.boaentrega.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,10 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class MercadoriaDTO { 
+public class MercadoriaDTO {  
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
-    private Long idFornecedor;
+    private Long quantidade;
+    private String numEntrega;
     private String produtoDescricao;
 }

@@ -25,7 +25,7 @@ public class UsuarioReceiveMessage {
         this.cadastroService = cadastroService;
     }
 
-    @RabbitListener(queues = {"${cadastro.usuario.rabbitmq.queue}"})
+    @RabbitListener(queues = {"${login.usuario.rabbitmq.queue}"})
     public void receiveMessageUsuario(@Payload UsuarioDTO usuario) {
         System.out.println(usuario);
         cadastroService.cadastrarUsuario(usuario);

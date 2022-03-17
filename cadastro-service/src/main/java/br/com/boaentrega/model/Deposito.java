@@ -15,27 +15,28 @@ import org.modelmapper.ModelMapper;
  * @author Eduardo Santos
  */
 @Entity
-@Table(name="tb_deposito")
+@Table(name = "tb_deposito")
 @Data
 public class Deposito {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name="id_deposito")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_deposito")
     private Long id;
-    
-    @Column(name="regiao")
+
+    @Column(name = "regiao")
     private String regiao;
-    
-    @Column(name="endereco")
+
+    @Column(name = "endereco")
     private String endereco;
-    
-    @Column(name="cod_deposito")
+
+    @Column(name = "cod_deposito")
     private String codDeposito;
-    
-    @Column(name="fl_ativo")
+
+    @Column(name = "fl_ativo")
     private Boolean ativo;
-    
-     public static Deposito create(DepositoDTO clienteDTO) {
-        return new  ModelMapper().map(clienteDTO, Deposito.class);
+
+    public static Deposito create(DepositoDTO clienteDTO) {
+        return new ModelMapper().map(clienteDTO, Deposito.class);
     }
 }

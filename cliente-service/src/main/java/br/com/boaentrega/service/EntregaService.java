@@ -5,6 +5,8 @@
 package br.com.boaentrega.service;
 
 import br.com.boaentrega.dto.AtualizaEntregaDTO;
+import br.com.boaentrega.dto.BaixaEstoqueDTO;
+import br.com.boaentrega.dto.DirectionsDTO;
 import br.com.boaentrega.dto.RomaneioEntregaDTO;
 import br.com.boaentrega.message.EntregaSendMessage;
 import br.com.boaentrega.model.Cliente;
@@ -26,15 +28,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,12 +109,16 @@ public class EntregaService {
         entregaRepository.save(entrega.get());
     }
 
-    public List<RomaneioEntregaDTO> buscarEntregaPorId(Long id) {
+    public List<RomaneioEntregaDTO> buscarRomaneioPorId(Long id) {
         return consultaEntregaRepository.buscarRomaneioEntregaPorId(id);
     }
 
     public Optional<Mercadoria> buscarMercadoriaPorId(Long id) {
         return mercadoriaRepository.findById(id);
+    }
+    
+     public Optional<Entrega> buscarEntregaPorId(Long id) {
+        return entregaRepository.findById(id);
     }
 
     public Optional<Cliente> buscarClientePorId(Long id) {
@@ -142,10 +144,10 @@ public class EntregaService {
         return numeroEntrega;
     }
 
-    public String calcularRota(String origem, String destino) {
+    public HttpResponse calcularRota(String origem, String destino) {
         
         var client = HttpClient.newHttpClient();
-        
+        HttpResponse<String> response = null;
         try {
             var request = HttpRequest.newBuilder(
                     URI.create(
@@ -155,14 +157,19 @@ public class EntregaService {
                     .header("accept", "application/json")
                     .build();
             
-            var response = client.send(request, BodyHandlers.ofString());
+            response = client.send(request, BodyHandlers.ofString());
 
             System.out.println(response.body());
 
-            return "0";
+            return response;
         } catch (Exception e) {
             e.getMessage();
         }
-        return "";
+        return response;
     }
+    
+    public void enviarBaixaEstoque(BaixaEstoqueDTO baixaEstoque){
+        entregaSendMessage.sendMessageBaixaEstoque(baixaEstoque);
+    }
+    
 }

@@ -42,7 +42,7 @@ import org.modelmapper.ModelMapper;
 @Table(name = "tb_usuario")
 public class Usuario {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_usuario")
     private Long idUsuario;
 

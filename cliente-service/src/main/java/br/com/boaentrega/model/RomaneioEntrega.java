@@ -10,25 +10,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  *
  * @author Eduardo Santos
  */
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
-@Table(name = "tb_romaneio_entrega")
+@Table(name = "tb_romaneio")
+@Data
 public class RomaneioEntrega {
+    
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
-    @Column(name = "id_romaneio_entrega")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_romaneio")
     private Long id;
 
     @Column(name="id_entrega")
@@ -37,6 +33,6 @@ public class RomaneioEntrega {
     @Column(name="id_mercadoria")
     private Long idMercadoria;
     
-    @Column(name="unidade")
-    private Long unidade;
+    @Column(name="quantidade")
+    private Integer quantidade;
 }

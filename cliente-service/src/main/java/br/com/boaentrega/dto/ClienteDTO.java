@@ -5,6 +5,7 @@
 package br.com.boaentrega.dto;
 
 import br.com.boaentrega.model.Cliente;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClienteDTO {
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
     private String name;
     private String endereco;
