@@ -7,6 +7,7 @@ package br.com.boaentrega.service;
 import br.com.boaentrega.dto.AtualizaEntregaDTO;
 import br.com.boaentrega.dto.BaixaEstoqueDTO;
 import br.com.boaentrega.dto.DirectionsDTO;
+import br.com.boaentrega.dto.FinalizaEntregaDTO;
 import br.com.boaentrega.dto.RomaneioEntregaDTO;
 import br.com.boaentrega.message.EntregaSendMessage;
 import br.com.boaentrega.model.Cliente;
@@ -16,6 +17,8 @@ import br.com.boaentrega.model.Fornecedor;
 import br.com.boaentrega.model.Mercadoria;
 import br.com.boaentrega.model.RomaneioEntrega;
 import br.com.boaentrega.model.dominio.AndamentoEntrega;
+import br.com.boaentrega.model.dominio.DescricaoFinalEntrega;
+import br.com.boaentrega.model.dominio.EstadoTerminoEntrega;
 import br.com.boaentrega.repository.ClienteRepository;
 import br.com.boaentrega.repository.DepositoRepository;
 import br.com.boaentrega.repository.EntregaRepository;
@@ -88,21 +91,30 @@ public class EntregaService {
     public Entrega atualizarAndamentoEntrega(Long id, AtualizaEntregaDTO entrega) {
         Date date = new Date();
         var entregaAtual = entregaRepository.findById(id);
-        entregaAtual.get().setCodUltimoDeposito(entrega.getCodDeposito());
-        entregaAtual.get().setStatus(AndamentoEntrega.obterAndamentoPorValor(entrega.getStatus()).toString());
-        entregaAtual.get().setDataAtualizacao(date);
-        var entregaAtualizada = entregaRepository.save(entregaAtual.get());
-        return entregaAtualizada;
+
+        if (!entregaAtual.get().getStatus().contains("FINALIZADA")) {
+            entregaAtual.get().setCodUltimoDeposito(entrega.getCodDeposito());
+            entregaAtual.get().setStatus(AndamentoEntrega.obterAndamentoPorValor(entrega.getStatus()).toString());
+            entregaAtual.get().setDataAtualizacao(date);
+            var entregaAtualizada = entregaRepository.save(entregaAtual.get());
+            return entregaAtualizada;
+        } else {
+            return null;
+        }
     }
 
-    public void finalizarEntregar(Long id) {
+    public void finalizarEntregar(FinalizaEntregaDTO finalizaEntrega) {
         Date date = new Date();
-        var entrega = entregaRepository.findById(id);
+        var entrega = entregaRepository.findById(finalizaEntrega.getIdEntrega());
         entrega.get().setDataEntrega(date);
         entrega.get().setStatus(AndamentoEntrega.obterAndamentoPorValor(3l).toString());
 
         //enviado msg ao serviço de gestao. 
         RomaneioEntregaDTO romaneio = new RomaneioEntregaDTO();
+        romaneio.setCliente(entrega.get().getCliente().getName());
+        romaneio.setNumEntrega(entrega.get().getNumeroEntrega());
+        romaneio.setValorFinal(EstadoTerminoEntrega.obterTerminoPorValor(finalizaEntrega.getStatusFinal()).toString());
+        romaneio.setDescricao(DescricaoFinalEntrega.obterAndamentoPorValor(finalizaEntrega.getValorDescricao()).toString());
 
         entregaSendMessage.sendMessageCliente(romaneio);
 
@@ -116,8 +128,8 @@ public class EntregaService {
     public Optional<Mercadoria> buscarMercadoriaPorId(Long id) {
         return mercadoriaRepository.findById(id);
     }
-    
-     public Optional<Entrega> buscarEntregaPorId(Long id) {
+
+    public Optional<Entrega> buscarEntregaPorId(Long id) {
         return entregaRepository.findById(id);
     }
 
@@ -145,7 +157,7 @@ public class EntregaService {
     }
 
     public HttpResponse calcularRota(String origem, String destino) {
-        
+
         var client = HttpClient.newHttpClient();
         HttpResponse<String> response = null;
         try {
@@ -156,7 +168,7 @@ public class EntregaService {
                             + "&key=" + googleApiKey))
                     .header("accept", "application/json")
                     .build();
-            
+
             response = client.send(request, BodyHandlers.ofString());
 
             System.out.println(response.body());
@@ -167,9 +179,9 @@ public class EntregaService {
         }
         return response;
     }
-    
-    public void enviarBaixaEstoque(BaixaEstoqueDTO baixaEstoque){
+
+    public void enviarBaixaEstoque(BaixaEstoqueDTO baixaEstoque) {
         entregaSendMessage.sendMessageBaixaEstoque(baixaEstoque);
     }
-    
+
 }

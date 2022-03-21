@@ -8,6 +8,7 @@ import br.com.boaentrega.dto.NovoFornecedorDTO;
 import br.com.boaentrega.message.FornecedorSendMessage;
 import br.com.boaentrega.model.Fornecedor;
 import br.com.boaentrega.repository.FornecedorRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,10 @@ public class FornecedorService {
     
     public Optional<Fornecedor> buscarFornecedorPorId(Long id) {
         return fornecedorRepository.findById(id);
+    }
+    
+    public List<Fornecedor> listarFornecedores() {
+        return fornecedorRepository.findAll();
     }
     
 }

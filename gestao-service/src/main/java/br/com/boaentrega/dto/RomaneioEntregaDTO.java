@@ -24,5 +24,6 @@ public class RomaneioEntregaDTO {
     private String dtCriacao;
     private String numEntrega;
     private String unidades;
+    private String valorFinal;
     private String descricao;
 }

@@ -7,6 +7,7 @@ package br.com.boaentrega.controller;
 import br.com.boaentrega.dto.FornecedorDTO;
 import br.com.boaentrega.model.Fornecedor;
 import br.com.boaentrega.service.FornecedorService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -84,6 +85,11 @@ public class FornecedorController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);
         }
+    }
+    
+    @GetMapping("/buscarTodos")
+    public List<Fornecedor> buscarListaDeposito() {
+        return fornecedorService.listarFornecedores();
     }
 
 }

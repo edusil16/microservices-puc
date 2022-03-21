@@ -8,6 +8,7 @@ import br.com.boaentrega.dto.AtualizaEntregaDTO;
 import br.com.boaentrega.dto.BaixaEstoqueDTO;
 import br.com.boaentrega.dto.ClienteDTO;
 import br.com.boaentrega.dto.DirectionsDTO;
+import br.com.boaentrega.dto.FinalizaEntregaDTO;
 import br.com.boaentrega.dto.MercadoriaDTO;
 import br.com.boaentrega.dto.MercadoriaPedidoDTO;
 import br.com.boaentrega.dto.NovaEntregaDTO;
@@ -116,10 +117,10 @@ public class EntregaController {
         }
     }
 
-    @PostMapping("/acusarRecebimento/{id}")
-    public ResponseEntity acusarRecebimento(@PathVariable("id") Long id) {
+    @PostMapping("/acusarRecebimento")
+    public ResponseEntity acusarRecebimento(@RequestBody FinalizaEntregaDTO entrega) {
         try {
-            entregaService.finalizarEntregar(id);
+            entregaService.finalizarEntregar(entrega);
             return ResponseEntity.ok("Entrega finalizada!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);

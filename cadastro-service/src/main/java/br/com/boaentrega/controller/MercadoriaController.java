@@ -8,6 +8,7 @@ import br.com.boaentrega.dto.MercadoriaDTO;
 import br.com.boaentrega.model.Mercadoria;
 import br.com.boaentrega.service.FornecedorService;
 import br.com.boaentrega.service.MercadoriaService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,12 +30,10 @@ public class MercadoriaController {
 
     private final MercadoriaService mercadoriaService;
 
-    private final FornecedorService fornecedorService;
 
     @Autowired
-    public MercadoriaController(MercadoriaService mercadoriaService, FornecedorService fornecedorService) {
+    public MercadoriaController(MercadoriaService mercadoriaService) {
         this.mercadoriaService = mercadoriaService;
-        this.fornecedorService = fornecedorService;
     }
 
     @PostMapping("/cadastrar")
@@ -88,5 +87,10 @@ public class MercadoriaController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e);
         }
+    }
+    
+    @GetMapping("/buscarTodos")
+    public List<Mercadoria> buscarListaDeposito() {
+        return mercadoriaService.listarMercadorias();
     }
 }

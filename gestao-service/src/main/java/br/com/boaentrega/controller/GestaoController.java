@@ -4,12 +4,15 @@
  */
 package br.com.boaentrega.controller;
 
+import br.com.boaentrega.dto.ValorReembolsoDTO;
 import br.com.boaentrega.model.EntregaRealizada;
 import br.com.boaentrega.model.Reembolso;
 import br.com.boaentrega.service.GestaoService;
 import java.util.List;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,5 +39,10 @@ public class GestaoController {
     public List<Reembolso> buscarTodosReembolsos() {
         return gestaoService.listarReembolsos();
     }
-
+    
+    @PostMapping("/gerarReembolso/{id}")
+    public Reembolso gerarReembolso(@PathVariable Long idEntrega, @RequestBody ValorReembolsoDTO valor){
+        var entrega = gestaoService.gerarReembolso(idEntrega, valor.getValor());
+        return entrega;
+    }
 }

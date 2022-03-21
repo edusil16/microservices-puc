@@ -4,7 +4,6 @@
  */
 package br.com.boaentrega.dto;
 
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,13 +19,10 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class RomaneioEntregaDTO {
-    private String codDeposito;
-    private String cliente;
-    private String endereco;
-    private String dtCriacao;
-    private String numEntrega;
-    private Long quantidade;
-    private String valorFinal;
-    private String descricao;
+public class FinalizaEntregaDTO {
+
+    private Long idEntrega;
+    private Long statusFinal;
+    private Long valorDescricao;
+    
 }

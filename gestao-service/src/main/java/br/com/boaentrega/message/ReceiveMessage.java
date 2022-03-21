@@ -15,21 +15,21 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ReceiveMessage {
-    
+
     private final EntregaRealizadaRepository entregaRealizadaRepository;
     private final ReembolsoRepository reembolsoRepository;
-    
+
     @Autowired
-    public ReceiveMessage (EntregaRealizadaRepository entregaRealizadaRepository,ReembolsoRepository reembolsoRepository) {
+    public ReceiveMessage(EntregaRealizadaRepository entregaRealizadaRepository, ReembolsoRepository reembolsoRepository) {
         this.entregaRealizadaRepository = entregaRealizadaRepository;
         this.reembolsoRepository = reembolsoRepository;
     }
-    
-     @RabbitListener(queues = {"${cliente.entrega.rabbitmq.queue}"})
-     public void processarEntrega(RomaneioEntregaDTO romaneio){
-        var operacao = romaneio.getDescricao();
-        
-        if (operacao.equals("sucesso")) {
+
+    @RabbitListener(queues = {"${cliente.entrega.rabbitmq.queue}"})
+    public void processarEntrega(RomaneioEntregaDTO romaneio) {
+        var operacao = romaneio.getValorFinal();
+
+        if (operacao.equals("SUCESSO")) {
             EntregaRealizada entrega = new EntregaRealizada();
             entrega.setNumEntrega(romaneio.getNumEntrega());
             entregaRealizadaRepository.save(entrega);
@@ -39,6 +39,5 @@ public class ReceiveMessage {
             reembolso.setMotivo(romaneio.getDescricao());
             reembolsoRepository.save(reembolso);
         }
-        
-     }
+    }
 }

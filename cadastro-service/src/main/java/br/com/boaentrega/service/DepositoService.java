@@ -60,7 +60,7 @@ public class DepositoService {
         return depositoRepository.findById(id);
     }
     
-    public List<Deposito> buscarTodos() {
+    public List<Deposito> listarDepositos() {
         return depositoRepository.findAll();
     }
     

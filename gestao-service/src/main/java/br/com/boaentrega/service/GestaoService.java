@@ -18,20 +18,28 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GestaoService {
-     private final EntregaRealizadaRepository entregaRealizadaRepository;
+
+    private final EntregaRealizadaRepository entregaRealizadaRepository;
     private final ReembolsoRepository reembolsoRepository;
-    
+
     @Autowired
-    public GestaoService (EntregaRealizadaRepository entregaRealizadaRepository,ReembolsoRepository reembolsoRepository) {
+    public GestaoService(EntregaRealizadaRepository entregaRealizadaRepository, ReembolsoRepository reembolsoRepository) {
         this.entregaRealizadaRepository = entregaRealizadaRepository;
         this.reembolsoRepository = reembolsoRepository;
     }
-    
+
     public List<EntregaRealizada> listarEntregas() {
         return entregaRealizadaRepository.findAll();
     }
-    
+
     public List<Reembolso> listarReembolsos() {
         return reembolsoRepository.findAll();
+    }
+
+    public Reembolso gerarReembolso(Long id, Double valor) {
+        var entrega = reembolsoRepository.findById(id);
+        entrega.get().setValorReembolso(valor);
+        reembolsoRepository.save(entrega.get());
+        return entrega.get();
     }
 }

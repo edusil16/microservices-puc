@@ -31,4 +31,7 @@ public class Reembolso {
     
     @Column(name="motivo")
     private String motivo;
+    
+    @Column(name="vl_reembolso")
+    private Double valorReembolso;
 }

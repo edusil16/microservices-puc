@@ -8,6 +8,7 @@ import br.com.boaentrega.dto.ClienteDTO;
 import br.com.boaentrega.message.ClienteSendMessage;
 import br.com.boaentrega.model.Cliente;
 import br.com.boaentrega.repository.ClienteRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,19 +44,23 @@ public class ClienteService {
             return null;
         }
     }
-    
+
     public boolean deletarCliente(Long id) {
         var clienteCadastrado = clienteRepository.findById(id);
-        
-        if(clienteCadastrado.isPresent()){
+
+        if (clienteCadastrado.isPresent()) {
             clienteRepository.delete(clienteCadastrado.get());
             return true;
         } else {
             return false;
         }
     }
-    
+
     public Optional<Cliente> buscarClientePorId(Long id) {
         return clienteRepository.findById(id);
+    }
+
+    public List<Cliente> listarClientes() {
+        return clienteRepository.findAll();
     }
 }

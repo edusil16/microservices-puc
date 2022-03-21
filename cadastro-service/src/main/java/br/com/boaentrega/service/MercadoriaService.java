@@ -8,6 +8,7 @@ import br.com.boaentrega.dto.NovaMercadoriaDTO;
 import br.com.boaentrega.message.MercadoriaSendMessage;
 import br.com.boaentrega.model.Mercadoria;
 import br.com.boaentrega.repository.MercadoriaRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +63,10 @@ public class MercadoriaService {
 
     public Optional<Mercadoria> buscarMercadoriaPorId(Long id) {
         return mercadoriaRepository.findById(id);
+    }
+    
+    public List<Mercadoria> listarMercadorias(){
+        return mercadoriaRepository.findAll();
     }
 
 }

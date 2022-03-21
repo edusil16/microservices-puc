@@ -89,7 +89,7 @@ public class DepositoController {
     
     @GetMapping("/buscarTodos")
     public List<Deposito> buscarListaDeposito() {
-        return depositoService.buscarTodos();
+        return depositoService.listarDepositos();
     }
 
 
