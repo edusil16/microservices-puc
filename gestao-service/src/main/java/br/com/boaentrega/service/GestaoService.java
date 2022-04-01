@@ -4,6 +4,7 @@
  */
 package br.com.boaentrega.service;
 
+import br.com.boaentrega.dto.ValorReembolsoDTO;
 import br.com.boaentrega.model.EntregaRealizada;
 import br.com.boaentrega.model.Reembolso;
 import br.com.boaentrega.repository.EntregaRealizadaRepository;
@@ -36,9 +37,9 @@ public class GestaoService {
         return reembolsoRepository.findAll();
     }
 
-    public Reembolso gerarReembolso(Long id, Double valor) {
-        var entrega = reembolsoRepository.findById(id);
-        entrega.get().setValorReembolso(valor);
+    public Reembolso gerarReembolso(ValorReembolsoDTO valorDTO) {
+        var entrega = reembolsoRepository.findById(valorDTO.getId());
+        entrega.get().setValorReembolso(valorDTO.getValor());
         reembolsoRepository.save(entrega.get());
         return entrega.get();
     }

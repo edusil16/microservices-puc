@@ -30,13 +30,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
     private final JwtUserDetailsService jwtUserDetailsService;
-    Environment environment;
 
     @Autowired
-    public JwtRequestFilter(JwtTokenUtil jwtTokenUtil, JwtUserDetailsService jwtUserDetailsService, Environment environment) {
+    public JwtRequestFilter(JwtTokenUtil jwtTokenUtil, JwtUserDetailsService jwtUserDetailsService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.jwtUserDetailsService = jwtUserDetailsService;
-        this.environment = environment;
     }
 
     @Override

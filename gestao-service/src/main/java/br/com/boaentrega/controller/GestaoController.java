@@ -40,9 +40,9 @@ public class GestaoController {
         return gestaoService.listarReembolsos();
     }
     
-    @PostMapping("/gerarReembolso/{id}")
-    public Reembolso gerarReembolso(@PathVariable Long idEntrega, @RequestBody ValorReembolsoDTO valor){
-        var entrega = gestaoService.gerarReembolso(idEntrega, valor.getValor());
+    @PostMapping("/gerarReembolso")
+    public Reembolso gerarReembolso(@RequestBody ValorReembolsoDTO valor){
+        var entrega = gestaoService.gerarReembolso(valor);
         return entrega;
     }
 }
