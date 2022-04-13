@@ -36,6 +36,14 @@ public class GestaoService {
     public List<Reembolso> listarReembolsos() {
         return reembolsoRepository.findAll();
     }
+    
+    public List<Reembolso> listarReembolsosAPagar() {
+        return reembolsoRepository.listaReembolsoAPagar();
+    }
+    
+    public List<Reembolso> listarReembolsosPagas() {
+        return reembolsoRepository.listaReembolsoPagas();
+    }
 
     public Reembolso gerarReembolso(ValorReembolsoDTO valorDTO) {
         var entrega = reembolsoRepository.findById(valorDTO.getId());

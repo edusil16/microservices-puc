@@ -10,7 +10,6 @@ import br.com.boaentrega.model.Reembolso;
 import br.com.boaentrega.service.GestaoService;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +36,16 @@ public class GestaoController {
 
     @GetMapping("/reembolsos")
     public List<Reembolso> buscarTodosReembolsos() {
+        return gestaoService.listarReembolsos();
+    }
+    
+    @GetMapping("/reembolsosPagar")
+    public List<Reembolso> buscarTodosReembolsosAPagar() {
+        return gestaoService.listarReembolsosAPagar();
+    }
+    
+    @GetMapping("/reembolsosPagos")
+    public List<Reembolso> buscarTodosReembolsosPagos() {
         return gestaoService.listarReembolsos();
     }
     
